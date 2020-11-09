@@ -90,11 +90,14 @@ const PokemonList = () => {
 
   useEffect(() => {    
     let arrayOfFilters = [];
-    let arrayIterable = [searchFilter, genderFilter, typeFilter, colorFilter];
+    let arrayIterable = [genderFilter, typeFilter, colorFilter];
     for (let value of arrayIterable){
       if (value.length > 0){
         arrayOfFilters.push(value)
       }   
+    }
+    if (search){
+      arrayOfFilters.push(searchFilter)
     }
     console.log(arrayOfFilters)  
     let commonArray= arrayOfFilters.length > 0 ? arrayOfFilters.reduce((acc, elem) => 
