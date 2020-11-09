@@ -1,24 +1,28 @@
-import logo from './logo.svg';
+import { BrowserRouter as Router } from "react-router-dom";
+import Header from './pages/Header';
+import Search from './pages/Search';
+import PokemonList from './pages/PokemonList';
+import Filters from './components/filters/Filters';
 import './App.css';
-
+import { Container, Row, Col } from 'react-bootstrap';
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>      
+      <div className="App">
+        <Header />
+        <Container>
+          <Row>
+            <Col md={2} lg={2}>
+              <Filters />  
+            </Col>
+            <Col md={10} lg={10}>
+              <Search />
+              <PokemonList /> 
+            </Col>            
+          </Row> 
+        </Container>                     
+      </div>
+    </Router>
   );
 }
 
