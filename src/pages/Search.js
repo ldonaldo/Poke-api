@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import {Formik} from "formik"
@@ -7,6 +7,7 @@ import { changeSearch } from '../actions/search.actions';
 
 const Search = () => {
   const dispatch = useDispatch();
+  let timeout;
 
   const formSchema = Yup.object().shape({
     search: Yup.string()
@@ -14,9 +15,8 @@ const Search = () => {
 
   const handleChange = (event, setFieldValue, dispatch) => {
     const { value } = event.target
-    console.log(value)
     dispatch(changeSearch(value))
-    setFieldValue("search", value)
+    setFieldValue("search", value)    
   }
   return (
     <Formik

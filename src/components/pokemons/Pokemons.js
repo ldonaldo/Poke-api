@@ -7,7 +7,7 @@ function Pokemons({ pokemons }){
     <Container>
       <Row>
       {pokemons.length > 0 ? pokemons.map( elem => {
-        return <Pokemon key={elem}  name={elem} />
+        return <Pokemon key={elem.id} number={elem.id}  name={elem.name} />
       }) : <h6>No items found...</h6>}
       </Row>
     </Container>

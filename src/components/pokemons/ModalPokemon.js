@@ -2,10 +2,11 @@ import React, {useEffect, useState} from 'react';
 import { Modal, Button, Table, Badge, Image } from 'react-bootstrap';
 import { getPokemonSpecies, getPokemonDetails, getGender, getEvolutionChain } from '../../utils/HTTPRequests';
 
-const ModalPokemon = ({ show, onHide, image, pokemonDetails, pokemonSpecies}) => {
+const ModalPokemon = ({ show, onHide, image, pokemonDetails, pokemonSpecies, numberId}) => {
   let [isMale, setIsMale] = useState(false)
   let [isFemale, setIsFemale] = useState(false)
   let [isGenderless, setIsGenderless] = useState(false)  
+  let [evolutionChain, setEvolutionChain] = useState([])
 
   useEffect(() => {
     const fetchPokemonGender = async() => {
@@ -28,17 +29,39 @@ const ModalPokemon = ({ show, onHide, image, pokemonDetails, pokemonSpecies}) =>
       }
     }
     if (show) fetchPokemonGender()
-  },[pokemonSpecies])
+  },[show])
 
   useEffect(() => {
     const fetchEvolutions = async () => {
-      let chain = {};
-      const response = await getEvolutionChain(pokemonSpecies.evolution_chain.url) || {}
-      chain['species'] = response.chain.species.name
-      chain['evolves_to'] = response.chain.evolves_to
+      let chain = [];
+      const response = await getEvolutionChain(pokemonSpecies.evolution_chain.url) 
+      for (let key in response.chain){
+        if(key == 'species'){
+          chain.push(response.chain.species.name)
+        }
+        if (key == "evolves_to" && response.chain.evolves_to.length > 0){
+          response.chain.evolves_to.map((element, index) => {
+            for ( let secondKey in response.chain.evolves_to[index]){
+              if(secondKey == 'species'){
+                chain.push(response.chain.evolves_to[index].species.name)
+              }  
+              if (secondKey == "evolves_to" && response.chain.evolves_to[index].evolves_to.length >= 0) {
+                response.chain.evolves_to[index].evolves_to.map((secondElem, secondIndex) => {
+                  for ( let thirdKey in response.chain.evolves_to[index].evolves_to[secondIndex]) {
+                    if (thirdKey == "species"){
+                      chain.push(response.chain.evolves_to[index].evolves_to[secondIndex].species.name)
+                    }
+                  }
+                })                
+              }
+            }
+          })          
+        }
+      }
+      setEvolutionChain(chain)      
     } 
     if (show) fetchEvolutions()
-  },[pokemonSpecies])
+  },[show])
   const { name, flavor_text_entries, height, weight, types} = pokemonDetails || {};
   const { color, habitat } = pokemonSpecies || {};  
   const pokemonTypes = types && types.map(elem => <Badge pill variant="info">{elem.type.name}</Badge>)
@@ -46,11 +69,12 @@ const ModalPokemon = ({ show, onHide, image, pokemonDetails, pokemonSpecies}) =>
   gender = isFemale ? gender += 'Female ' : gender += '' 
   gender = isMale ? gender += 'Male ' : gender += ' ' 
   gender = isGenderless ? gender += 'Genderless ' : gender += ' '
+  let showEvolutionChain = evolutionChain.length > 1 ? evolutionChain.map(element => <Badge pill variant="dark">{element}</Badge>).reverse()  : "This pokemon does not evolve"
 
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
-        <Modal.Title>{name}</Modal.Title>
+        <Modal.Title>{name}-{numberId}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Image src={image} rounded></Image>
@@ -83,6 +107,8 @@ const ModalPokemon = ({ show, onHide, image, pokemonDetails, pokemonSpecies}) =>
           </tbody>
         </Table>
         {pokemonTypes}
+        Evolution Chain
+        {showEvolutionChain}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>

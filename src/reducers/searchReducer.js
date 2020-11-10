@@ -10,7 +10,7 @@ let initialState = {
     water: false,
     fairy: false,
     ground: false,
-    sinister: false,
+    dark: false,
     fire: false,
     dragon: false,
     ice: false,

@@ -46,9 +46,9 @@ const Filters = () => {
       label: 'Ground'
     },
     {
-      name: 'sinister',
+      name: 'dark',
       key: '8',
-      label: 'Sinister'
+      label: 'Dark'
     },
     {
       name: 'fire',
@@ -140,9 +140,9 @@ const Filters = () => {
       label: 'Brown'
     },
     {
-      name: 'orange',
+      name: 'gray',
       key: '5',
-      label: 'Orange'
+      label: 'Gray'
     },
     {
       name: 'green',

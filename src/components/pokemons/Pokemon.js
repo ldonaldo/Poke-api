@@ -3,7 +3,7 @@ import { Card, Button } from 'react-bootstrap';
 import ModalPokemon from './ModalPokemon';
 import { getPokemonDetails, getPokemonSpecies} from '../../utils/HTTPRequests';
 
-function Pokemon({ name, entry_number }) {
+function Pokemon({ name, number }) {
   let [showModal, setShowModal] = useState(false);  
   let [pokemonDetails, setPokemonDetails] = useState({})
   let [pokemonSpecies, setPokemonSpecies] = useState({})
@@ -20,15 +20,15 @@ function Pokemon({ name, entry_number }) {
     fetchPokemonData()
   },[])
 
-  const number = pokemonSpecies.id ? pokemonSpecies.id.toString().padStart(3,"000") : ""
-  const image = number ? `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${number}.png` : ""
+  const numberId = number.toString().padStart(3,"000") 
+  const image = numberId ? `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${numberId}.png` : ""
   return (
     <Card lg={4}>
       <Card.Img  variant="top" src={image} rounded />
       <Card.Body>
-        <Card.Title>{`Pokemon ${number}`}</Card.Title>
+        <Card.Title>{`Pokemon ${numberId}`}</Card.Title>
         <Button onClick={() => setShowModal(true)}>Show Pokemon</Button>
-        <ModalPokemon show={showModal} onHide={() => setShowModal(false)} pokemonDetails={pokemonDetails} pokemonSpecies={pokemonSpecies} image={image} />
+        <ModalPokemon show={showModal} onHide={() => setShowModal(false)} pokemonDetails={pokemonDetails} pokemonSpecies={pokemonSpecies} image={image} numberId={numberId} />
       </Card.Body>
     </Card>
   )
