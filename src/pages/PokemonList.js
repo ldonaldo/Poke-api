@@ -3,7 +3,7 @@ import Pokemons from '../components/pokemons/Pokemons';
 import { useSelector, useDispatch } from 'react-redux';
 import { getFullPokedex, getGender, getColor, getType } from '../utils/HTTPRequests';
 import { changeFullPokedex, changePartialPokedex } from '../actions/search.actions'
-import { Container, Button } from 'react-bootstrap';
+import { Container, Button, Spinner } from 'react-bootstrap';
 
 
 const PokemonList = () => {
@@ -19,100 +19,119 @@ const PokemonList = () => {
   const [typeFilter, setTypeFilter] = useState([])
   const [colorFilter, setColorFilter] = useState([])
   const [genderFilter, setGenderFilter] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    setLoading(true)
+    setGenderFilter(fullPokedex)
+    setColorFilter(fullPokedex)
+    setTypeFilter(fullPokedex)
+    setSearchFilter(fullPokedex)
+  },[fullPokedex])
 
   useEffect(() => {
     async function getPokedex(){
-      const response = await getFullPokedex()
-      let fullPokedexArray = [];
-      response.pokemon_entries.map(elem => fullPokedexArray.push({name: elem.pokemon_species.name, id: elem.entry_number}))
-      const partialResponse = fullPokedexArray.filter((elem, index) => index < 20  )
+      setLoading(true)
+      const storedPokedex = JSON.parse(localStorage.getItem("fullPokedex"))
+      const response = storedPokedex && storedPokedex.length > 0 ? storedPokedex :  await getFullPokedex()
+      let fullPokedexArray = storedPokedex && storedPokedex.length > 0 ? storedPokedex :  [];
+      if (storedPokedex && storedPokedex.length === 0) {
+        response.pokemon_entries && response.pokemon_entries.map(elem => fullPokedexArray.push({name: elem.pokemon_species.name, id: elem.entry_number}))
+      }
+      const partialResponse = fullPokedexArray.filter((elem, index) => index < 20  )     
       setSearchFilter(fullPokedexArray)
       dispatch(changeFullPokedex(fullPokedexArray))
+      localStorage.setItem("fullPokedex",JSON.stringify(fullPokedexArray))
       dispatch(changePartialPokedex(partialResponse))
     }
     getPokedex()
   }, [])
 
   useEffect(() => {    
+    setLoading(true)
     const filterPokemons = fullPokedex.filter( elem => elem.name.includes(search) || elem.id.toString().includes(search)  )
-    search ? setSearchFilter(filterPokemons) : setSearchFilter(filterPokemons)       
+    const searchArray = filterPokemons.length === 0 ? searchFilter : filterPokemons
+    setSearchFilter(searchArray)       
   }, [search])
 
   useEffect(() => {
-    async function getAllFilters(){    
-      let genderFiltered = []  
-      const fetchGender = gender !== "all" ? await getGender(gender) : partialPokedex;
-      fetchGender.pokemon_species_details && fetchGender.pokemon_species_details.map(element => genderFiltered.push({name: element.pokemon_species.name, id: element.pokemon_species.url.split('/')[6] }) )
+    async function getGenderFilters(){ 
+      setLoading(true) 
+      let genderArray = []  
+      const fetchGender = gender !== "all" ? await getGender(gender) : fullPokedex;
+      fetchGender.pokemon_species_details && fetchGender.pokemon_species_details.map(element => genderArray.push({name: element.pokemon_species.name, id: element.pokemon_species.url.split('/')[6] }) )
+      let genderFiltered = genderArray.length === 0 ? fullPokedex : genderArray;
       setGenderFilter(genderFiltered)     
     }
-    getAllFilters();
+    getGenderFilters();
   }, [gender])
 
   useEffect(() => {
-    async function getAllFilters(){          
-      let colorFiltered = []
+    async function getColorFilters(){     
+      setLoading(true)    
+      let colorArray = []
       for (let [key, value] of Object.entries(color)) {
         if (value) {
           const color = await getColor(key)
-          color.pokemon_species.map(element => colorFiltered.push({name: element.name, id: element.url.split('/')[6]}))
+          color.pokemon_species.map(element => colorArray.push({name: element.name, id: element.url.split('/')[6]}))
         }  
       }
+      let colorFiltered = colorArray.length === 0 ? fullPokedex : colorArray;
       setColorFilter(colorFiltered)      
     }
-    getAllFilters();
+    getColorFilters();
   }, [color])
 
   useEffect(() => {
-    async function getTypeFilters(){          
-      let typeFiltered = []
+    async function getTypeFilters(){  
+      setLoading(true)       
+      let typeArray = []
       for (let [key, value] of Object.entries(type)) {
         if (value) {
           const type = await getType(key)
-          type.pokemon.map(element => typeFiltered.indexOf(element.pokemon.name) === -1 && element.pokemon.url.split('/')[6] <= 807 ? typeFiltered.push({name: element.pokemon.name, id: element.pokemon.url.split('/')[6]}) : null) 
+          type.pokemon.map(element => typeArray.indexOf(element.pokemon.name) === -1 && element.pokemon.url.split('/')[6] <= 807 ? typeArray.push({name: element.pokemon.name, id: element.pokemon.url.split('/')[6]}) : null) 
         }  
-      }      
+      }  
+      let typeFiltered = typeArray.length === 0 ? fullPokedex : typeArray    
       setTypeFilter(typeFiltered)
     }
     getTypeFilters();
   }, [type])
 
   useEffect(() => {    
+    setLoading(true)
     let arrayOfFilters = [];
-    let arrayIterable = [genderFilter, typeFilter, colorFilter];
+    let arrayIterable = [genderFilter, typeFilter, colorFilter, searchFilter];
     for (let value of arrayIterable){
-      if (value.length > 0){
-        arrayOfFilters.push(...value)  
-      }      
-    }    
-    arrayOfFilters.push(...searchFilter)
-    console.log(arrayOfFilters)  
+        arrayOfFilters.push(...value)            
+    }     
     const countRepeated = names => names.reduce((acc,elem) => ({...acc,
       [elem.name]: (acc[elem.name] || 0) + 1
     }), {})
     const repeated = elems => 
-      Object.keys(elems).filter((element) => elems[element] > 1);
+      Object.keys(elems).filter((element) => elems[element] >= 4);
     const commonArray = repeated(countRepeated(arrayOfFilters))
-    console.log(commonArray)
     let finalArray = arrayOfFilters.filter( (element,index) => commonArray.includes(element.name))
-    console.log(finalArray)
     let filteredArray = Array.from( new Set(finalArray.map( elem => elem.name))).map(element => {
       return finalArray.find( a => a.name === element)
     })
-    console.log(filteredArray)
     dispatch(changePartialPokedex(filteredArray))
-    
+    setLoading(false)    
   }, [searchFilter, genderFilter, typeFilter, colorFilter])
 
   const handleLoadMore = () => {
+    setLoading(true)
     const newLength = partialPokedex.length + 20
     if (fullPokedex.length > newLength) {
       const updatePartial = fullPokedex.filter((elem,index) => index < newLength )
       dispatch(changePartialPokedex(updatePartial))
     }
   }
+  const isLoading = loading ? <Spinner animation="border" variant="primary" size="xl" /> : null
   return (
     <Container>
       <h6>Choose a pokemon to get more information</h6>
+      {isLoading}
       <Pokemons pokemons={partialPokedex} />
       {!search && <Button variant="info" onClick={handleLoadMore}>Load More</Button>}
     </Container>

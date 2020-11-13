@@ -24,7 +24,7 @@ function Pokemon({ name, number }) {
   const image = numberId ? `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${numberId}.png` : ""
   return (
     <Card lg={4}>
-      <Card.Img  variant="top" src={image} rounded />
+      <Card.Img  variant="top" src={image} />
       <Card.Body>
         <Card.Title>{`Pokemon ${numberId}`}</Card.Title>
         <Button onClick={() => setShowModal(true)}>Show Pokemon</Button>

@@ -77,7 +77,7 @@ const ModalPokemon = ({ show, onHide, image, pokemonDetails, pokemonSpecies, num
         <Modal.Title>{name}-{numberId}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Image src={image} rounded></Image>
+        <Image src={image}></Image>
         <Table striped bordered hover variant="dark">
           <tbody>
             <tr>
