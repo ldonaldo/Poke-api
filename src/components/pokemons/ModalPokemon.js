@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Modal, Button, Table, Badge, Image } from 'react-bootstrap';
+import { Modal, Button, Table, Badge, Image, Row, Col } from 'react-bootstrap';
 import { getPokemonSpecies, getPokemonDetails, getGender, getEvolutionChain } from '../../utils/HTTPRequests';
 
 const ModalPokemon = ({ show, onHide, image, pokemonDetails, pokemonSpecies, numberId}) => {
@@ -12,7 +12,7 @@ const ModalPokemon = ({ show, onHide, image, pokemonDetails, pokemonSpecies, num
     const fetchPokemonGender = async() => {
       for (let i = 1; i <= 3; i++){
         let response = await getGender(i)
-        let filter = response.pokemon_species_details.some(elem => elem.pokemon_species.name === pokemonDetails.name )
+        let filter = response.pokemon_species_details && response.pokemon_species_details.some(elem => elem.pokemon_species.name === pokemonDetails.name )
         switch(i){
           case 1:
             setIsFemale(filter)
@@ -65,7 +65,7 @@ const ModalPokemon = ({ show, onHide, image, pokemonDetails, pokemonSpecies, num
   const { name, flavor_text_entries, height, weight, types} = pokemonDetails || {};
   const { color, habitat } = pokemonSpecies || {};  
   const pokemonTypes = types && types.map(elem => <Badge pill variant="info">{elem.type.name}</Badge>)
-  let gender = '';
+  let gender = ''
   gender = isFemale ? gender += 'Female ' : gender += '' 
   gender = isMale ? gender += 'Male ' : gender += ' ' 
   gender = isGenderless ? gender += 'Genderless ' : gender += ' '

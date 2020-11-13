@@ -183,32 +183,40 @@ const Filters = () => {
   }
   return (
     <>
-      <h6>Filters</h6>
-      Type      
-      {checkBoxType.map(element => (
-        <>
-          <input name={element.name} type="checkbox" checked={typeFilter.name} onChange={handleChangeType} />
-          <label>{element.label}</label>
-        </>
-      ))}
-      Color
-      {checkBoxColor.map(element => (
-        <>
-          <Col md={2} lg={2}>
-          <input name={element.name} type="checkbox" checked={colorFilter.name} onChange={handleChangeColor} />
-          <label>{element.label}</label>
-          </Col>
-        </>
-      ))}
-      Gender
-      {radioButton.map((element) => (
-        <Row>
+      <h3>Filters</h3>
+      <h6>Type</h6>  
+      <Row>  
+        {checkBoxType.map(element => (
           <>
-            <input type="radio" name="radio" onChange={() => handleChangeGender(element.value)} />
-            {element.name}
+            <Col md={6} lg={6}>
+              <input name={element.name} type="checkbox" checked={typeFilter.name} onChange={handleChangeType} />
+              <label>{element.label}</label>
+            </Col>
           </>
-        </Row>
-      ))}      
+        ))}
+      </Row>
+      <h6>Color</h6>
+      <Row>
+        {checkBoxColor.map(element => (
+          <>
+            <Col md={6} lg={6}>
+              <input name={element.name} type="checkbox" checked={colorFilter.name} onChange={handleChangeColor} />
+              <label>{element.label}</label>
+            </Col>
+          </>
+        ))}
+      </Row>
+      <h6>Gender</h6>
+      <Row>
+        {radioButton.map((element) => (        
+            <>
+              <Col md={12} lg={12}>
+                <input type="radio" name="radio" onChange={() => handleChangeGender(element.value)} />
+                {element.name}
+              </Col>
+            </>        
+        ))}   
+      </Row>   
     </>
   )
 

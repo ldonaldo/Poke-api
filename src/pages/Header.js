@@ -1,14 +1,9 @@
 import React from 'react';
 import { Navbar, Nav} from 'react-bootstrap';
-
 function Header() {
   return (
     <Navbar collapseOnSelect bg="primary" expand="lg" >      
-      <Navbar.Brand>PokeApi</Navbar.Brand>
-      <Nav className="mr-auto">
-        <Nav.Link href="#">Home</Nav.Link>
-        <Nav.Link href="#">Pokemons</Nav.Link> 
-      </Nav>
+      <Navbar.Brand href="#"><img width="80" height="40" alt="Logo" src="https://i.ibb.co/dkw6QvV/pokeapi.png" /></Navbar.Brand>
     </Navbar>        
   )
 }

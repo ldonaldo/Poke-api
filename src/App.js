@@ -10,12 +10,12 @@ function App() {
     <Router>      
       <div className="App">
         <Header />
-        <Container>
+        <Container fluid>
           <Row>
-            <Col md={2} lg={2}>
+            <Col md={3} lg={3}>
               <Filters />  
             </Col>
-            <Col md={10} lg={10}>
+            <Col md={9} lg={9}>
               <Search />
               <PokemonList /> 
             </Col>            

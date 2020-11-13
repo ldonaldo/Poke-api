@@ -3,7 +3,7 @@ import Pokemons from '../components/pokemons/Pokemons';
 import { useSelector, useDispatch } from 'react-redux';
 import { getFullPokedex, getGender, getColor, getType } from '../utils/HTTPRequests';
 import { changeFullPokedex, changePartialPokedex } from '../actions/search.actions'
-import { Container, Button, Spinner } from 'react-bootstrap';
+import { Container, Button, Spinner, Row } from 'react-bootstrap';
 
 
 const PokemonList = () => {
@@ -19,7 +19,7 @@ const PokemonList = () => {
   const [typeFilter, setTypeFilter] = useState([])
   const [colorFilter, setColorFilter] = useState([])
   const [genderFilter, setGenderFilter] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setLoading(true)
@@ -134,6 +134,7 @@ const PokemonList = () => {
       {isLoading}
       <Pokemons pokemons={partialPokedex} />
       {!search && <Button variant="info" onClick={handleLoadMore}>Load More</Button>}
+      
     </Container>
   )
 }

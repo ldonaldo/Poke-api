@@ -7,7 +7,6 @@ import { changeSearch } from '../actions/search.actions';
 
 const Search = () => {
   const dispatch = useDispatch();
-  let timeout;
 
   const formSchema = Yup.object().shape({
     search: Yup.string()
@@ -26,7 +25,7 @@ const Search = () => {
       {({ values, touched, errors, setFieldValue, resetForm}) => (
         <Form>
           <Form.Group controlId="searchInput">
-            <Form.Label>Search</Form.Label>
+            <Form.Label><h6>Search</h6></Form.Label>
             <Form.Control name="search" type="text" placeholder="Search" onChange={(e) => handleChange(e, setFieldValue, dispatch) } value={values.search} className={touched.search && errors.search ? "is-invalid" : null} />
             {touched.search && errors.search ? (
               <div className="error-message">{errors.search}</div>
