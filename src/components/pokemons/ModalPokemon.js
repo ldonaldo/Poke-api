@@ -114,9 +114,6 @@ const ModalPokemon = ({ show, onHide, image, pokemonDetails, pokemonSpecies, num
         <Button variant="secondary" onClick={onHide}>
           Close
         </Button>
-        <Button variant="primary" onClick={onHide}>
-          Save Changes
-        </Button>
       </Modal.Footer>
     </Modal>
   )

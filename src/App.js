@@ -1,4 +1,5 @@
 import { BrowserRouter as Router } from "react-router-dom";
+import Helmet from 'react-helmet';
 import Header from './pages/Header';
 import Search from './pages/Search';
 import PokemonList from './pages/PokemonList';
@@ -9,6 +10,9 @@ function App() {
   return (
     <Router>      
       <div className="App">
+        <Helmet>
+          <title>Pokeapi</title>
+        </Helmet>
         <Header />
         <Container fluid>
           <Row>
