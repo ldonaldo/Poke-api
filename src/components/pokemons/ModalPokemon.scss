@@ -1,0 +1,50 @@
+.pokemon-details {
+  display: grid;
+  grid-template-columns: repeat(4, 200px);
+  grid-template-rows: 50px 150px 150px 50px minmax(100px, 1fr);
+  grid-template-areas: 
+    "image image name number"
+    "image image data data"
+    "image image data data"
+    "image image types ."
+    "evolution evolution evolution evolution";
+  align-items: center;
+  justify-items: center;
+  row-gap: 5px;
+  padding: 1em;
+  .image{
+    img{
+      width: 350px;
+      height: 350px;
+    }
+    grid-area: image;
+    align-self: center;
+    justify-self: center;    
+  }
+  .name{
+    grid-area: name;
+    align-self: center;
+    justify-self: start;
+  }
+  .number {
+    grid-area: number;
+  }
+  .data{
+    grid-area: data;
+    justify-self: stretch;
+    margin-right: 40px;
+  }
+  .types{
+    grid-area: types;
+  }
+  .evolution{
+    grid-area: evolution; 
+    justify-self: stretch;
+    align-self: stretch;
+    .info {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      
+    }
+  }
+}

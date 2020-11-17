@@ -1,0 +1,44 @@
+.filter-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.25fr 3fr 1fr 1fr;
+  grid-template-areas: "title" "type" "color" "gender";
+  row-gap: 5px;
+  padding: 1em;
+  height: 80vh; 
+  overflow-y: scroll;
+  .title {
+    grid-area: title;
+    text-align: left;
+  }
+  .filter-type {
+    grid-area: type;
+    justify-items: start;
+    .type-checkboxes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(10, minmax(1em, 1fr));
+      justify-items: start;
+    }
+  }
+  .filter-color {
+    grid-area: color;
+    justify-items: start;
+    .color-checkboxes {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(1em, 1fr));
+      grid-template-rows: 1fr 1fr;
+      justify-items: start;
+    }
+  }
+  .filter-gender {
+    grid-area: gender;   
+    justify-items: start; 
+    .gender-radiobuttons {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(4, minmax(1.5em, 1fr));
+      justify-items: start;      
+    }
+  }
+}

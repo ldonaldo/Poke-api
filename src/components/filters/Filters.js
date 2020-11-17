@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux'
 import { changeType, changeColor, changeGender} from '../../actions/search.actions';
+import './Filters.scss';
 
 const Filters = () => {
   const dispatch = useDispatch();
@@ -170,6 +171,7 @@ const Filters = () => {
       label: 'Black'
     },
   ];
+
   const handleChangeType = (event) => {
     let obj = {...typeFilter, [event.target.name]: event.target.checked};
     dispatch(changeType(obj))
@@ -181,43 +183,47 @@ const Filters = () => {
   const handleChangeGender = (value) => {
     dispatch(changeGender(value))
   }
+
+  const typeCheckboxes = checkBoxType.map((element, index) => (
+    <div key={index}>      
+        <input name={element.name} type="checkbox" checked={typeFilter.name} onChange={handleChangeType} />
+        <label>{element.label}</label>      
+    </div>
+  ))
+  const colorCheckboxes = checkBoxColor.map((element, index) => (
+    <div key={index}>      
+      <input name={element.name} type="checkbox" checked={colorFilter.name} onChange={handleChangeColor} />
+      <label>{element.label}</label>      
+    </div>
+  ))
+  const genderRadioButtons = radioButton.map((element, index) => (        
+    <div key={index}>      
+      <input type="radio" name="radio" onChange={() => handleChangeGender(element.value)} />
+      <label>{element.name}</label>      
+    </div>        
+  ))  
   return (
-    <>
-      <h3>Filters</h3>
-      <h6>Type</h6>  
-      <Row>  
-        {checkBoxType.map(element => (
-          <>
-            <Col md={6} lg={6}>
-              <input name={element.name} type="checkbox" checked={typeFilter.name} onChange={handleChangeType} />
-              <label>{element.label}</label>
-            </Col>
-          </>
-        ))}
-      </Row>
-      <h6>Color</h6>
-      <Row>
-        {checkBoxColor.map(element => (
-          <>
-            <Col md={6} lg={6}>
-              <input name={element.name} type="checkbox" checked={colorFilter.name} onChange={handleChangeColor} />
-              <label>{element.label}</label>
-            </Col>
-          </>
-        ))}
-      </Row>
-      <h6>Gender</h6>
-      <Row>
-        {radioButton.map((element) => (        
-            <>
-              <Col md={12} lg={12}>
-                <input type="radio" name="radio" onChange={() => handleChangeGender(element.value)} />
-                {element.name}
-              </Col>
-            </>        
-        ))}   
-      </Row>   
-    </>
+    <div className="filter-content">
+      <h3 className="title">Filters</h3>      
+      <div className="filter-type">
+        <h6 className="title">Type</h6>  
+        <div className="type-checkboxes">
+          {typeCheckboxes}
+        </div>        
+      </div>
+      <div className="filter-color">
+        <h6 className="title">Color</h6>
+        <div className="color-checkboxes">
+          {colorCheckboxes}
+        </div>        
+      </div>
+      <div className="filter-gender">
+        <h6 className="title">Gender</h6>
+        <div className="gender-radiobuttons">
+          {genderRadioButtons} 
+        </div>
+      </div> 
+    </div>
   )
 
 }

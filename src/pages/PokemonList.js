@@ -129,13 +129,13 @@ const PokemonList = () => {
   }
   const isLoading = loading ? <Spinner animation="border" variant="primary" size="xl" /> : null
   return (
-    <Container>
+    <div className="pokemon-list">
       <h6>Choose a pokemon to get more information</h6>
       {isLoading}
       <Pokemons pokemons={partialPokedex} />
       {!search && <Button variant="info" onClick={handleLoadMore}>Load More</Button>}
+    </div>
       
-    </Container>
   )
 }
 

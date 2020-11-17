@@ -22,7 +22,7 @@ function Pokemon({ name, number }) {
   },[])
 
   const numberId = number.toString().padStart(3,"000") 
-  const image = numberId ? `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${numberId}.png` : ""
+  const image = numberId ? `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${numberId}.png` : ""
   return (
     <Col lg={4} md={4}>
       <Card hover style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', borderRadius: '10px', marginBottom: '10px', marginTop: '10px'}}>

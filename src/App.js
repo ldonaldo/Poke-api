@@ -4,8 +4,7 @@ import Header from './pages/Header';
 import Search from './pages/Search';
 import PokemonList from './pages/PokemonList';
 import Filters from './components/filters/Filters';
-import './App.css';
-import { Container, Row, Col } from 'react-bootstrap';
+import './App.scss';
 function App() {
   return (
     <Router>      
@@ -14,17 +13,15 @@ function App() {
           <title>Pokeapi</title>
         </Helmet>
         <Header />
-        <Container fluid>
-          <Row>
-            <Col md={3} lg={3}>
-              <Filters />  
-            </Col>
-            <Col md={9} lg={9}>
-              <Search />
-              <PokemonList /> 
-            </Col>            
-          </Row> 
-        </Container>                     
+        <div className="all-content">
+          <div className="filters">
+            <Filters /> 
+          </div>    
+          <div className="list">
+            <Search />
+            <PokemonList />
+          </div>
+        </div>                  
       </div>
     </Router>
   );
